@@ -9,7 +9,7 @@ import json
 class TurtleController(Node):
     def __init__(self):
         super().__init__('turtle_controller')
-        self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.publisher_ = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
         self.obstacles = []
         self.initial_x = 0.0
         self.initial_y = 0.0
@@ -22,14 +22,21 @@ class TurtleController(Node):
 
     def move_turtle(self, linear_x, angular_z):
         twist = Twist()
-        twist.linear.x = linear_x  # 선형 속도 조정
-        twist.angular.z = angular_z  # 각속도 조정
+        twist.linear.x = linear_x * 2.0  # 선형 속도 두 배 증가
+        twist.angular.z = angular_z * 2.0  # 각속도 두 배 증가
         self.publisher_.publish(twist)
         print(f"Moving turtle: linear_x={linear_x}, angular_z={angular_z}")
 
     def add_obstacle(self, x1, y1, x2, y2):
         self.obstacles.append((x1, y1, x2, y2))
         print(f"Obstacle added: ({x1}, {y1}) to ({x2}, {y2})")
+
+    def remove_obstacle(self, index):
+        if 0 <= index < len(self.obstacles):
+            removed = self.obstacles.pop(index)
+            print(f"Obstacle removed: {removed}")
+            return True
+        return False
 
     def is_collision(self, x, y):
         for (x1, y1, x2, y2) in self.obstacles:

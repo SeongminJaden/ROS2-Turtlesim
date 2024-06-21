@@ -15,6 +15,9 @@ class ObstacleRequest(BaseModel):
     x2: float
     y2: float
 
+class RemoveObstacleRequest(BaseModel):
+    index: int
+
 @router.post("/move")
 async def move(request: MoveRequest):
     try:
@@ -42,6 +45,20 @@ async def add_obstacle(request: ObstacleRequest):
         return {"message": "Obstacle added successfully"}
     except Exception as e:
         print(f"Error in /add_obstacle: {e}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
+
+@router.post("/remove_obstacle")
+async def remove_obstacle(request: RemoveObstacleRequest):
+    try:
+        turtle_controller = get_turtle_controller()
+        index = request.index
+
+        if turtle_controller.remove_obstacle(index):
+            return {"message": "Obstacle removed successfully"}
+        else:
+            raise HTTPException(status_code=404, detail="Obstacle not found")
+    except Exception as e:
+        print(f"Error in /remove_obstacle: {e}")
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
 
 app.include_router(router)
