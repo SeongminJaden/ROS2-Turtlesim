@@ -1,0 +1,5 @@
+from .turtle_controller import TurtleController
+import rclpy
+
+rclpy.init(args=None)
+turtle_controller = TurtleController()
