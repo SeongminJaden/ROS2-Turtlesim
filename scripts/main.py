@@ -1,4 +1,8 @@
-from flask_app.server import start_flask_app
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from fastapi_app.server import start_fastapi_app
 from ros2 import turtle_controller
 import threading
 import asyncio
@@ -12,7 +16,7 @@ def start_asyncio_loop():
 
 if __name__ == '__main__':
     try:
-        flask_thread = threading.Thread(target=start_flask_app)
+        flask_thread = threading.Thread(target=start_fastapi_app)
         flask_thread.start()
 
         asyncio_thread = threading.Thread(target=start_asyncio_loop)
