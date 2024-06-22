@@ -8,7 +8,7 @@ import json
 
 class TurtleController(Node):
     def __init__(self):
-        super().__init__('turtle_controller')
+        super().__init__('git tset')
         self.publisher_ = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
         self.obstacles = []
         self.initial_x = 0.0
